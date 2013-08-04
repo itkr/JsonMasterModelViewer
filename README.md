@@ -6,7 +6,8 @@ JsonMasterModelViewer for Django Models
 
 overview
 ------
-It is a static file for displaying the django model JSON
+It is a static file for displaying the django model JSON.
+Format that can be used.
 
     [
       {
@@ -20,7 +21,8 @@ It is a static file for displaying the django model JSON
     ]
 
 
-How to make the dump data
+make json
 ------
+by django command
 
     python manage.py dumpdata <appname appname ...>
