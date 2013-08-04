@@ -8,7 +8,7 @@ overview
 ------
 It is a static file for displaying the django model JSON.
 
-Format that can be used.
+JSON format:
 
     [
         {
