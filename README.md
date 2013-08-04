@@ -8,7 +8,9 @@ overview
 ------
 It is a static file for displaying the django model JSON.
 
-JSON format:
+
+JSON format
+------
 
     [
         {
@@ -17,13 +19,13 @@ JSON format:
             "fields": {
                 "key1": "value1", 
                 "key2": "value2", 
-            },
-        }
+            }
+        },
       ...
     ]
 
 
-make json
+make JSON
 ------
 by django command
 
