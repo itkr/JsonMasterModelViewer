@@ -11,13 +11,14 @@ It is a static file for displaying the django model JSON.
 Format that can be used.
 
     [
-      {
-        "pk": 1, 
-        "model": "service.service", 
-        "fields": {
-        "key1": "value1", 
-        "key2": "value2", 
-      },
+        {
+            "pk": 1, 
+            "model": "appname.tablename", 
+            "fields": {
+                "key1": "value1", 
+                "key2": "value2", 
+            },
+        }
       ...
     ]
 
