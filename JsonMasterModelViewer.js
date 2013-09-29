@@ -367,6 +367,17 @@
 	};
 
 	/**
+	 *
+	 */
+	var mkFilter = function(){
+		var filter = {
+			"sortKey" : getSelectValue($(JMMV.ID.SORTKEY_SELECT)),
+                        //"range": [0, 10]
+                }
+		return filter;
+	}
+
+	/**
 	 * initialize
 	 */
 	var init = function() {
@@ -381,17 +392,11 @@
 		showColumns($('cb'), model);
 		showPulldown($('sk'), model);
 
-		filter = {
-			"sortKey" : getSelectValue($(JMMV.ID.SORTKEY_SELECT)),
-			//"range": [0, 10]
-		}
+		filter = mkFilter();
 		showData($('container'), model, filter, getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
 
 		JMMV.on($('show'), 'click', function() {
-			filter = {
-				"sortKey" : getSelectValue($(JMMV.ID.SORTKEY_SELECT)),
-				//"range": [0, 10]
-			}
+			filter = mkFilter();
 			showData($('container'), model, filter, getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
 		});
 	};
