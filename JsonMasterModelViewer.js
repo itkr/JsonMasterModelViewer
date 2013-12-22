@@ -218,7 +218,7 @@
 				var init = function() {
 					var i;
 					current = 1;
-					length = datas.length / range;
+					length = Math.ceil(datas.length / range);
 					for ( i = 0; i < length; i++) {
 						pages.push(datas.slice(i * range, i * range + range));
 					}
@@ -226,6 +226,14 @@
 
 				var get = function(page) {
 					return pages[page - 1];
+				};
+
+				this.getMaxNumber = function(){
+					return length;
+				};
+
+				this.getCurrentNumber = function(){
+					return current;
 				};
 
 				this.getCurrent = function() {
@@ -464,6 +472,7 @@
 
 		pager = JMMV.getPager(model.getDatas(mkFilter()), viewLength);
 		showData($('container'), pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
+		$('pager_count').innerHTML = "" + pager.getCurrentNumber() + "/" + pager.getMaxNumber();
 
 		JMMV.on($('show'), 'click', function() {
 			pager = JMMV.getPager(model.getDatas(mkFilter()), viewLength);
@@ -472,10 +481,12 @@
 		JMMV.on($('next'), 'click', function() {
 			pager.next();
 			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX))]);
+			$('pager_count').innerHTML = "" + pager.getCurrentNumber() + "/" + pager.getMaxNumber();
 		});
 		JMMV.on($('prev'), 'click', function() {
 			pager.prev();
 			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX))]);
+			$('pager_count').innerHTML = "" + pager.getCurrentNumber() + "/" + pager.getMaxNumber();
 		});
 	};
 
