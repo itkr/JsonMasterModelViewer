@@ -215,21 +215,47 @@
 			 */
 			Pager : function(datas, range) {
 				var pages = [];
+				var current = 0;
+				var length = 0;
+
 				var init = function() {
 					var i;
-					for ( i = 0; i < datas.length / range; i++) {
+					current = 1;
+					length = datas.length / range;
+					for ( i = 0; i < length; i++) {
 						pages.push(datas.slice(i * range, i * range + range));
 					}
+				};
+
+				var get = function(page) {
+					return pages[page - 1];
 				};
 
 				this.getAll = function() {
 					return pages;
 				};
 
-				this.get = function(page) {
-					return pages[page - 1];
+				this.getCurrent = function(){
+					return get(current);
 				};
 
+				this.next = function(){
+					// TODO: hasNext
+					current++;
+					return this.getCurrent();
+				};
+
+				this.prev = function(){
+					// TODO: hasPrev
+					current--;
+					return this.getCurrent();
+				};
+
+				this.goTo = function(page){
+					// TODO: hasOne
+					current = page - 1;
+					return this.getCurrent();
+				};
 				init();
 			}
 		};
@@ -292,6 +318,11 @@
 						eventTarget["on" + eventType] = eventHandler;
 					}
 				}
+			},
+
+			// 仮
+			getPager: function(datas, range){
+				return new self.models.Pager(datas, range);
 			}
 		};
 
@@ -421,6 +452,11 @@
 			filter = mkFilter();
 			showData($('container'), model, filter, getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
 		});
+
+		// 仮
+		var pager = JMMV.getPager(model.getDatas({}), 3)
+		console.log(pager.getCurrent()[0].pk);
+		console.log(pager.next()[0].pk);
 	};
 
 	JMMV.on(global, 'load', init);
