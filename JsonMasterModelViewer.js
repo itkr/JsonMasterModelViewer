@@ -239,15 +239,38 @@
 					return get(current);
 				};
 
+				this.hasNext = function(){
+					if (current < length){
+						return true;
+					}
+					return false;
+				};
+
+				this.hasPrev = function(){
+					if (1 < current){
+						return true;
+					}
+					return false;
+				};
+
+				this.hasOne = function(page){
+					if(1 < page && page < length){
+						return true;
+					}
+					return false;
+				};
+
 				this.next = function(){
-					// TODO: hasNext
-					current++;
+					if(this.hasNext()){
+						current++;
+					}
 					return this.getCurrent();
 				};
 
 				this.prev = function(){
-					// TODO: hasPrev
-					current--;
+					if(this.hasPrev()){
+						current--;
+					}
 					return this.getCurrent();
 				};
 
@@ -426,7 +449,6 @@
 	var mkFilter = function() {
 		var filter = {
 			"sortKey" : getSelectValue($(JMMV.ID.SORTKEY_SELECT)),
-			//"range": [0, 10]
 		}
 		return filter;
 	}
@@ -453,10 +475,20 @@
 			showData($('container'), model, filter, getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
 		});
 
-		// 仮
+		// ---- 仮 ----
 		var pager = JMMV.getPager(model.getDatas({}), 3)
+		var next = function(){
+			pager.next();
+			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), ["id", "name"]]);
+		};
+		var prev = function(){
+			pager.prev();
+			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), ["id", "name"]]);
+		};
 		console.log(pager.getCurrent()[0].pk);
-		console.log(pager.next()[0].pk);
+		JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), ["id", "name"]]);
+		JMMV.on($('next'), 'click', next);
+		JMMV.on($('prev'), 'click', prev);
 	};
 
 	JMMV.on(global, 'load', init);
