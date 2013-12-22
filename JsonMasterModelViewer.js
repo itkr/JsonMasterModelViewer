@@ -13,7 +13,6 @@
 			 * @return {Object}
 			 */
 			perthJson : function(json) {
-				// （´・ω・｀）
 				return eval("(" + json + ")");
 			}
 		};
@@ -235,46 +234,46 @@
 					return pages;
 				};
 
-				this.getCurrent = function(){
+				this.getCurrent = function() {
 					return get(current);
 				};
 
-				this.hasNext = function(){
-					if (current < length){
+				this.hasNext = function() {
+					if (current < length) {
 						return true;
 					}
 					return false;
 				};
 
-				this.hasPrev = function(){
-					if (1 < current){
+				this.hasPrev = function() {
+					if (1 < current) {
 						return true;
 					}
 					return false;
 				};
 
-				this.hasOne = function(page){
-					if(1 < page && page < length){
+				this.hasOne = function(page) {
+					if (1 < page && page < length) {
 						return true;
 					}
 					return false;
 				};
 
-				this.next = function(){
-					if(this.hasNext()){
+				this.next = function() {
+					if (this.hasNext()) {
 						current++;
 					}
 					return this.getCurrent();
 				};
 
-				this.prev = function(){
-					if(this.hasPrev()){
+				this.prev = function() {
+					if (this.hasPrev()) {
 						current--;
 					}
 					return this.getCurrent();
 				};
 
-				this.goTo = function(page){
+				this.goTo = function(page) {
 					// TODO: hasOne
 					current = page - 1;
 					return this.getCurrent();
@@ -344,7 +343,7 @@
 			},
 
 			// 仮
-			getPager: function(datas, range){
+			getPager : function(datas, range) {
 				return new self.models.Pager(datas, range);
 			}
 		};
@@ -408,12 +407,11 @@
 	/**
 	 * show datas
 	 * @param {Element} element
-	 * @param {JsonMasterModelViewer.MasterModel} model
-	 * @param {Object} filter
+	 * @param {Array} datas
 	 * @param {Array} columns
 	 */
-	var showData = function(element, model, filter, columns) {
-		JMMV.show(element, JMMV.FORMAT.DATA_TABLE, [model.getDatas(filter), columns]);
+	var showData = function(element, datas, columns) {
+		JMMV.show(element, JMMV.FORMAT.DATA_TABLE, [datas, columns]);
 	};
 
 	/**
@@ -447,48 +445,45 @@
 	 *
 	 */
 	var mkFilter = function() {
-		var filter = {
+		return {
 			"sortKey" : getSelectValue($(JMMV.ID.SORTKEY_SELECT)),
-		}
-		return filter;
+		};
 	}
 	/**
 	 * initialize
 	 */
 	var init = function() {
 
+		var viewLength = 3;
 		var jsonField = $('source');
 		var model = JMMV.create(jsonField.value);
 		var filter;
+		var pager;
 
+		// Jsonの置いてあるテキストテキストフィールドを消す
+		// JavaScriptにエラーがあれば表示される
 		jsonField.style.display = "none";
 
+		// 表示
 		showModelName($('mn'), model);
 		showColumns($('cb'), model);
 		showPulldown($('sk'), model);
 
-		filter = mkFilter();
-		showData($('container'), model, filter, getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
+		pager = JMMV.getPager(model.getDatas(mkFilter()), viewLength);
+		showData($('container'), pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
 
 		JMMV.on($('show'), 'click', function() {
-			filter = mkFilter();
-			showData($('container'), model, filter, getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
+			pager = JMMV.getPager(model.getDatas(mkFilter()), viewLength);
+			showData($('container'), pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
 		});
-
-		// ---- 仮 ----
-		var pager = JMMV.getPager(model.getDatas({}), 3)
-		var next = function(){
+		JMMV.on($('next'), 'click', function() {
 			pager.next();
-			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), ["id", "name"]]);
-		};
-		var prev = function(){
+			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX))]);
+		});
+		JMMV.on($('prev'), 'click', function() {
 			pager.prev();
-			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), ["id", "name"]]);
-		};
-		console.log(pager.getCurrent()[0].pk);
-		JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), ["id", "name"]]);
-		JMMV.on($('next'), 'click', next);
-		JMMV.on($('prev'), 'click', prev);
+			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX))]);
+		});
 	};
 
 	JMMV.on(global, 'load', init);
