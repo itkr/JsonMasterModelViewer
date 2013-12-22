@@ -208,6 +208,29 @@
 					return copyData;
 				};
 
+			},
+
+			/**
+			 *
+			 */
+			Pager : function(datas, range) {
+				var pages = [];
+				var init = function() {
+					var i;
+					for ( i = 0; i < datas.length / range; i++) {
+						pages.push(datas.slice(i * range, i * range + range));
+					}
+				};
+
+				this.getAll = function() {
+					return pages;
+				};
+
+				this.get = function(page) {
+					return pages[page - 1];
+				};
+
+				init();
 			}
 		};
 		return objects;
@@ -369,14 +392,13 @@
 	/**
 	 *
 	 */
-	var mkFilter = function(){
+	var mkFilter = function() {
 		var filter = {
 			"sortKey" : getSelectValue($(JMMV.ID.SORTKEY_SELECT)),
-                        //"range": [0, 10]
-                }
+			//"range": [0, 10]
+		}
 		return filter;
 	}
-
 	/**
 	 * initialize
 	 */
