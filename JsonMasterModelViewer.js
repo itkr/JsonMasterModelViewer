@@ -25,7 +25,6 @@
 
 		// Element id
 		self.ID = {
-			DATA_TABLE : "dataTable",
 			COLUMN_CHECKBOX : "columnCheckbox",
 			SORTKEY_SELECT : "sortkeySelect"
 		};
@@ -69,7 +68,6 @@
 				}
 				table.appendChild(tr);
 			}
-			table.setAttribute("id", self.ID.DATA_TABLE);
 			return table;
 		};
 
@@ -230,10 +228,6 @@
 					return pages[page - 1];
 				};
 
-				this.getAll = function() {
-					return pages;
-				};
-
 				this.getCurrent = function() {
 					return get(current);
 				};
@@ -274,8 +268,7 @@
 				};
 
 				this.goTo = function(page) {
-					// TODO: hasOne
-					current = page - 1;
+					current = page;
 					return this.getCurrent();
 				};
 				init();
