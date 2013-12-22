@@ -9,7 +9,7 @@ overview
 It is a static file for displaying the django model JSON.
 
 
-JSON format
+format
 ------
 
     [
@@ -25,7 +25,7 @@ JSON format
     ]
 
 
-make JSON
+make
 ------
 by django command
 
