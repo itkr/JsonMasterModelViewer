@@ -344,7 +344,11 @@
 				}
 			},
 
-			// 仮
+			/**
+			 * get Pager object
+			 * @param {Array} datas
+			 * @param {int} range
+			 */
 			getPager : function(datas, range) {
 				return new self.models.Pager(datas, range);
 			}
