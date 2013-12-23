@@ -111,7 +111,6 @@
 			var option;
 			var text;
 			var i;
-			select.setAttribute('name', self.ID.SORTKEY_SELECT);
 			select.setAttribute('id', self.ID.SORTKEY_SELECT);
 			for ( i = 0; i < columns.length; i++) {
 				text = document.createTextNode(columns[i]);
@@ -208,7 +207,9 @@
 			},
 
 			/**
-			 *
+			 * Pager Klass
+			 * @param {Arrau} datas
+			 * @param {int} range
 			 */
 			Pager : function(datas, range) {
 				var pages = [];
@@ -228,11 +229,11 @@
 					return pages[page - 1];
 				};
 
-				this.getMaxNumber = function(){
+				this.getMaxNumber = function() {
 					return length;
 				};
 
-				this.getCurrentNumber = function(){
+				this.getCurrentNumber = function() {
 					return current;
 				};
 
@@ -438,8 +439,8 @@
 	 * @param {Element} element
 	 * @param {JsonMasterModelViewer.MasterModel} model
 	 */
-	var showPulldown = function(element, model) {
-		JMMV.show(element, JMMV.FORMAT.SORTKEY_SELECT, [model.columns]);
+	var showPulldown = function(element, columns) {
+		JMMV.show(element, JMMV.FORMAT.SORTKEY_SELECT, [columns]);
 	};
 
 	/**
@@ -468,7 +469,7 @@
 		// 表示
 		showModelName($('mn'), model);
 		showColumns($('cb'), model);
-		showPulldown($('sk'), model);
+		showPulldown($('sk'), model.columns);
 
 		pager = JMMV.getPager(model.getDatas(mkFilter()), viewLength);
 		showData($('container'), pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
@@ -488,6 +489,10 @@
 			pager.prev();
 			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX))]);
 			$('pager_count').innerHTML = "" + pager.getCurrentNumber() + "/" + pager.getMaxNumber();
+		});
+		JMMV.on($(JMMV.ID.COLUMN_CHECKBOX), 'change', function() {
+			JMMV.show($('container'), JMMV.FORMAT.DATA_TABLE, [pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX))]);
+			showPulldown($('sk'), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
 		});
 	};
 
