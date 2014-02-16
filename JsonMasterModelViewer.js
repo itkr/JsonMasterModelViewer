@@ -475,11 +475,13 @@
 		showColumns($('cb'), model);
 		showPulldown($('sk'), model.columns);
 
+		viewLength = $('length').value
 		pager = JMMV.getPager(model.getDatas(mkFilter()), viewLength);
 		showData($('container'), pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
 		$('pager_count').innerHTML = "" + pager.getCurrentNumber() + "/" + pager.getMaxNumber();
 
 		JMMV.on($('show'), 'click', function() {
+			viewLength = $('length').value
 			pager = JMMV.getPager(model.getDatas(mkFilter()), viewLength);
 			showData($('container'), pager.getCurrent(), getCheckboxValues($(JMMV.ID.COLUMN_CHECKBOX)));
 			$('pager_count').innerHTML = "" + pager.getCurrentNumber() + "/" + pager.getMaxNumber();
